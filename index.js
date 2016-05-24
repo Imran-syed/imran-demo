@@ -17,7 +17,8 @@ app.set('port', (process.env.PORT || 5000));
   //response.render('pages/index');
 });*/
 
-MongoClient.connect("mongodb://52.39.125.200:27017,52.37.47.184:27017,52.40.35.230:27017/imran?w=0&readPreference=secondary",
+var database;
+MongoClient.connect("mongodb://52.40.166.27:27017,52.35.132.75:27017,52.10.8.5:27017/imran?w=0",
 {
 	server: {
       socketOptions: {
@@ -37,10 +38,11 @@ MongoClient.connect("mongodb://52.39.125.200:27017,52.37.47.184:27017,52.40.35.2
 		console.log("could not connect to the database");
 		throw err;
 	}
+	database = db;
 	app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
-	
+	console.log('Node app is running on port', app.get('port'));
+	});
+ });
   /*db.collection("imran").update({a:1}, {b:1}, {upsert:true}, function(err, result) {
     //test.equal(null, err);
     //test.equal(1, result);
@@ -50,7 +52,7 @@ MongoClient.connect("mongodb://52.39.125.200:27017,52.37.47.184:27017,52.40.35.2
   });*/
   
   app.get("/", function(req, res) {
-  db.collection("vatic").find({}).toArray(function(err, docs) {
+  database.collection("vatic").find({}).toArray(function(err, docs) {
     /*docs.each(function(err, doc) {
       if(doc) {
         console.log(doc);
@@ -63,7 +65,6 @@ MongoClient.connect("mongodb://52.39.125.200:27017,52.37.47.184:27017,52.40.35.2
 	return res.send(JSON.stringify(docs));
   });
   });
-});
 
 
 
